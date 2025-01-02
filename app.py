@@ -1,29 +1,13 @@
-import pickle
-import requests
-import os
-
-model_url ="https://drive.google.com/file/d/1GEEiCZlolQtijcTmd5Ohk2Q4BZ8tmDr-/view?usp=sharing"
-model_path="model.pkl"
-
-def download_model():
-    if not os.path.exists(model_path):
-        print("Downloading model...")
-        response = requests.get(model_url)
-        with open(model_path, 'wb') as f:
-            f.write(response.content)
-        print("Model downloaded.")
-
-download_model()
-
-with open('model.pkl','rb') as file:
-    model=pickle.load(file)
-
 from flask import Flask,render_template,request
 import tensorflow as tf
 from tensorflow.keras.preprocessing.sequence import pad_sequences
+import pickle
 
 
 app=Flask(__name__)
+
+with open('model.pkl','rb') as file:
+    model=pickle.load(file)
 
 with open('tokenizer.pkl','rb') as file:
     tokenizer=pickle.load(file)
